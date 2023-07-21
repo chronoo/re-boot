@@ -1,27 +1,26 @@
 fun main() {
     val maps: List<Map<String, Dto>> = listOf(
         mapOf(
-            "1" to Dto(setOf(1,2,3)),
-            "2" to Dto(setOf(4,5)),
+            "1" to Dto(setOf(1, 2, 3)),
+            "2" to Dto(setOf(4, 5)),
         ),
         mapOf(
-            "1" to Dto(setOf(6))
+            "1" to Dto(setOf(6)),
+            "3" to Dto(setOf(7,8))
         )
     )
     println(
-        getResult(maps)
+        maps.merge { acc, value ->
+            acc.copy(items = acc.items + value.items)
+        }
     )
 }
 
-private fun getResult(maps: List<Map<String, Dto>>): Map<String, Dto> {
-    val flatten: List<Map.Entry<String, Dto>> = maps.flatMap { it.entries }
-    val res = flatten
-        .groupBy({ it.key }) { it.value }
-    return res.mapValues {
-        it.value.reduce { acc, dto -> reduceDto(acc, dto) }
-    }
-}
+private inline fun <K, V> List<Map<K, V>>.merge(reducer: (acc: V, value: V) -> V): Map<K, V> =
+    flatMap { map -> map.entries }
+        .groupBy({ entry -> entry.key }) { entry -> entry.value }
+        .mapValues { entry -> entry.value.reduce(reducer) }
 
-private fun reduceDto(acc: Dto, dto: Dto) = acc.copy(items = acc.items + dto.items)
-
-data class Dto(val items: Set<Int> = setOf())
+data class Dto(
+    val items: Set<Int> = setOf()
+)
