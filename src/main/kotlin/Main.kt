@@ -16,11 +16,12 @@ fun main() {
     )
 }
 
+data class Dto(
+    val items: Set<Int> = setOf()
+)
+
 private inline fun <K, V> List<Map<K, V>>.merge(reducer: (acc: V, value: V) -> V): Map<K, V> =
     flatMap { map -> map.entries }
         .groupBy({ entry -> entry.key }) { entry -> entry.value }
         .mapValues { entry -> entry.value.reduce(reducer) }
 
-data class Dto(
-    val items: Set<Int> = setOf()
-)
