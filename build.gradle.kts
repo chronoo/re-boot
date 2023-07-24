@@ -13,6 +13,7 @@ repositories {
 }
 
 dependencies {
+    implementation(project(mapOf("path" to ":reboot")))
     testImplementation(kotlin("test"))
 }
 
