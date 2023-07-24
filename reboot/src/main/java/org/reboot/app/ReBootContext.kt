@@ -2,6 +2,7 @@ package org.reboot.app
 
 import com.google.common.reflect.ClassPath
 import org.reboot.app.annotation.Component
+import org.reboot.app.processor.ConfigInitializer
 import org.reboot.app.processor.Processor
 
 object ReBootContext {
@@ -26,6 +27,8 @@ object ReBootContext {
             .mapNotNull {
                 runCatching { it.load() }.getOrNull()
             }
+
+        ConfigInitializer.init(classes)
 
         classes.filter { it.isAnnotationPresent(Component::class.java) }
             .forEach { init(it) }

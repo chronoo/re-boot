@@ -1,8 +1,10 @@
 package web
 
-import org.reboot.app.annotation.Component
+import org.reboot.app.annotation.Config
 
-@Component
+@Config(prefix = "application")
 class WebConfig {
-    val message = "hello"
+    var message = "hello"
+    var fullName = "app"
+    var port = 123
 }

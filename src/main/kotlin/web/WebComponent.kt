@@ -7,6 +7,6 @@ class WebComponent(
     private val config: WebConfig
 ) {
     fun make() {
-        println(config.message)
+        println("${config.fullName}:${config.message}")
     }
 }

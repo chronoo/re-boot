@@ -5,7 +5,8 @@ import org.reboot.app.annotation.Schedule
 
 @Component
 class WebService(
-    private val component: WebComponent
+    private val component: WebComponent,
+    private val config: WebConfig
 ) {
     @Schedule(period = 3000)
     fun doIt() {
@@ -14,6 +15,6 @@ class WebService(
 
     @Schedule(period = 1000)
     fun doThat() {
-        println("that")
+        println("port is ${config.port}")
     }
 }
