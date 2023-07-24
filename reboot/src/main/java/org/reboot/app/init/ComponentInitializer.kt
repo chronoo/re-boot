@@ -12,20 +12,22 @@ object ComponentInitializer : ClassInitializer {
     private fun initClass(clazz: Class<*>, classes: List<Class<*>>): Any =
         when (val instance = ReBootContext.getByClass(clazz)) {
             null -> {
-                val constructor = clazz.declaredConstructors.firstOrNull() ?: classes.firstOrNull {
-                    clazz.isAssignableFrom(
-                        it
-                    ) && it.declaredConstructors.isNotEmpty()
-                }
-                    ?.declaredConstructors?.firstOrNull() ?: throw IllegalAccessException()
+                val constructor = findConstructor(clazz, classes)
                 val parameterTypes = constructor.parameterTypes
-                val component =
-                    constructor.newInstance(*parameterTypes.map { initClass(it, classes) }.toTypedArray()).apply {
-                        ReBootContext.contextMap[clazz] = this as Any
-                    }
-                component
+                constructor.newInstance(
+                    *parameterTypes.map { initClass(it, classes) }.toTypedArray<Any>()
+                ).apply {
+                    ReBootContext.contextMap[clazz] = this as Any
+                }
             }
 
             else -> instance
         }
+
+    private fun findConstructor(clazz: Class<*>, classes: List<Class<*>>) =
+        clazz.declaredConstructors.firstOrNull()
+            ?: classes.firstOrNull {
+                clazz.isAssignableFrom(it) && it.declaredConstructors.isNotEmpty()
+            }?.declaredConstructors?.firstOrNull()
+            ?: throw IllegalAccessException()
 }
