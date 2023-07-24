@@ -16,6 +16,12 @@ object ReBootContext {
         println("context was initialized")
     }
 
+    fun getByClass(clazz: Class<*>): Any? {
+        val targetClass = contextMap.keys.filterIsInstance(clazz)
+            .firstOrNull() ?: return null
+        return contextMap[targetClass]
+    }
+
     private fun invokeProcessors() {
         contextMap.filterValues { it is Processor }
             .forEach { (_, bean) -> (bean as Processor).process() }

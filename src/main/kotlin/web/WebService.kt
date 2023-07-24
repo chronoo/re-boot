@@ -5,7 +5,7 @@ import org.reboot.app.annotation.Schedule
 
 @Component
 class WebService(
-    private val component: WebComponent,
+    private val component: Maker,
     private val config: WebConfig
 ) {
     @Schedule(period = 3000)

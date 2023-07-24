@@ -5,8 +5,8 @@ import org.reboot.app.annotation.Component
 @Component
 class WebComponent(
     private val config: WebConfig
-) {
-    fun make() {
+) : Maker {
+    override fun make() {
         println("${config.fullName}:${config.message}")
     }
 }

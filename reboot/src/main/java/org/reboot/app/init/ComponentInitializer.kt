@@ -2,22 +2,27 @@ package org.reboot.app.init
 
 import org.reboot.app.ReBootContext
 import org.reboot.app.annotation.Component
-import java.lang.reflect.Constructor
 
-object ComponentInitializer: ClassInitializer {
+object ComponentInitializer : ClassInitializer {
     override fun init(classes: List<Class<*>>) {
         classes.filter { it.isAnnotationPresent(Component::class.java) }
-            .forEach { initClass(it) }
+            .forEach { initClass(it, classes) }
     }
 
-    private fun<T> initClass(clazz: Class<T>): T =
-        when (val instance = ReBootContext.contextMap[clazz] as T?) {
+    private fun initClass(clazz: Class<*>, classes: List<Class<*>>): Any =
+        when (val instance = ReBootContext.getByClass(clazz)) {
             null -> {
-                val constructor: Constructor<T> = clazz.declaredConstructors.first() as Constructor<T>
-                val parameterTypes = constructor.parameterTypes
-                val component = constructor.newInstance(*parameterTypes.map { initClass(it) }.toTypedArray()).apply {
-                    ReBootContext.contextMap[clazz] = this as Any
+                val constructor = clazz.declaredConstructors.firstOrNull() ?: classes.firstOrNull {
+                    clazz.isAssignableFrom(
+                        it
+                    ) && it.declaredConstructors.isNotEmpty()
                 }
+                    ?.declaredConstructors?.firstOrNull() ?: throw IllegalAccessException()
+                val parameterTypes = constructor.parameterTypes
+                val component =
+                    constructor.newInstance(*parameterTypes.map { initClass(it, classes) }.toTypedArray()).apply {
+                        ReBootContext.contextMap[clazz] = this as Any
+                    }
                 component
             }
 
