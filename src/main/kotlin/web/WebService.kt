@@ -1,11 +1,11 @@
 package web
 
-import org.reboot.app.Component
-import org.reboot.app.Schedule
+import org.reboot.app.annotation.Component
+import org.reboot.app.annotation.Schedule
 
 @Component
 class WebService(private val component: WebComponent) {
-    @Schedule
+    @Schedule(period = 3000)
     fun doIt() {
         component.make()
     }

@@ -1,4 +1,4 @@
-package org.reboot.app
+package org.reboot.app.annotation
 
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.CLASS)
