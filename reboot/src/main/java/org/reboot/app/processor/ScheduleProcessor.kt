@@ -16,7 +16,6 @@ class ScheduleProcessor : Processor {
                 method.isAnnotationPresent(Schedule::class.java)
             }.map { Scheduled(it, it.getAnnotation(Schedule::class.java)) } to bean.value
         }
-        if (methodPairs.isEmpty()) return
         methodPairs.forEach { methodPair: Pair<List<Scheduled>, Any> ->
             methodPair.first.forEach { scheduled ->
                 executor.scheduleAtFixedRate(

@@ -3,8 +3,10 @@ package web
 import org.reboot.app.annotation.Component
 
 @Component
-class WebComponent {
+class WebComponent(
+    private val config: WebConfig
+) {
     fun make() {
-        println("1")
+        println(config.message)
     }
 }
