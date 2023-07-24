@@ -1,8 +1,8 @@
 package org.reboot.app
 
 import com.google.common.reflect.ClassPath
-import org.reboot.app.annotation.Component
-import org.reboot.app.processor.ConfigInitializer
+import org.reboot.app.init.ComponentInitializer
+import org.reboot.app.init.ConfigInitializer
 import org.reboot.app.processor.Processor
 
 object ReBootContext {
@@ -22,27 +22,17 @@ object ReBootContext {
     }
 
     private fun initBeans() {
+        val classes = getAllClasses()
+        ConfigInitializer.init(classes)
+        ComponentInitializer.init(classes)
+    }
+
+    private fun getAllClasses(): List<Class<*>> {
         val classLoader = Thread.currentThread().contextClassLoader
         val classes = ClassPath.from(classLoader).topLevelClasses
             .mapNotNull {
                 runCatching { it.load() }.getOrNull()
             }
-
-        ConfigInitializer.init(classes)
-
-        classes.filter { it.isAnnotationPresent(Component::class.java) }
-            .forEach { init(it) }
+        return classes
     }
-
-    private fun init(clazz: Class<*>): Any =
-        when (val instance = contextMap[clazz]) {
-            null -> {
-                val constructor = clazz.declaredConstructors.first()
-                val parameterTypes = constructor.parameterTypes
-                constructor.newInstance(*parameterTypes.map { init(it) }.toTypedArray()).apply {
-                    contextMap[clazz] = this
-                }
-            }
-            else -> instance
-        }
 }
