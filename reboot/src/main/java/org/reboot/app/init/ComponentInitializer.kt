@@ -17,7 +17,10 @@ object ComponentInitializer : ClassInitializer {
 
     fun initClass(clazz: Class<*>, classes: List<Class<*>>): Any =
         when (val instance = ReBootContext.getByClass(clazz)) {
-            null -> ProxyMaker.make(clazz, classes)
+            null -> ProxyMaker.make(clazz, classes).run {
+                ReBootContext.contextMap[clazz] = this
+                bean
+            }
             else -> instance
         }
 
