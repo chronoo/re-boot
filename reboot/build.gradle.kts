@@ -3,7 +3,12 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("java")
     kotlin("jvm") version "1.9.0"
+    id("org.jetbrains.kotlin.plugin.allopen") version "1.9.0"
 //    id("io.freefair.aspectj") version "5.1.1"
+}
+
+allOpen {
+    annotation("org.reboot.app.annotation.Component")
 }
 
 group = "org.example"
@@ -21,6 +26,7 @@ dependencies {
 //    runtimeOnly("org.aspectj:aspectjrt:1.8.9")
 //    runtimeOnly("org.aspectj:aspectjweaver:1.8.9")
 //    implementation("org.aspectj:aspectjrt:1.9.6")
+    implementation("cglib:cglib:3.3.0")
     implementation(kotlin("reflect"))
 }
 tasks.test {
@@ -28,11 +34,11 @@ tasks.test {
 }
 val compileKotlin: KotlinCompile by tasks
 compileKotlin.kotlinOptions {
-    jvmTarget = "1.8"
+    jvmTarget = "11"
 }
 val compileTestKotlin: KotlinCompile by tasks
 compileTestKotlin.kotlinOptions {
-    jvmTarget = "1.8"
+    jvmTarget = "11"
 }
 
 //buildscript {

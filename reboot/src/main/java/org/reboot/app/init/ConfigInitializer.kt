@@ -1,5 +1,6 @@
 package org.reboot.app.init
 
+import org.reboot.app.Bean
 import org.reboot.app.ReBootContext
 import org.reboot.app.annotation.Config
 import org.reboot.app.internal.fillProps
@@ -10,8 +11,12 @@ object ConfigInitializer : ClassInitializer {
         val properties = PropertyReader.readProperties()
         val configs = classes.filter { it.isAnnotationPresent(Config::class.java) }
         ReBootContext.contextMap.putAll(
-            configs.associateWith { it.getDeclaredConstructor().newInstance()
-                .apply { fillProps(properties, it.getAnnotation(Config::class.java)) }
+            configs.associateWith {
+                Bean(
+                    it,
+                    it.getDeclaredConstructor().newInstance()
+                        .apply { fillProps(properties, it.getAnnotation(Config::class.java)) }
+                )
             }
         )
     }

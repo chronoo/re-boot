@@ -12,9 +12,9 @@ class ScheduleProcessor : Processor {
     override fun process() {
         val executor = Executors.newScheduledThreadPool(10)
         val methodPairs = ReBootContext.contextMap.map { bean ->
-            bean.value.javaClass.declaredMethods.filter { method ->
+            bean.value.clazz.declaredMethods.filter { method ->
                 method.isAnnotationPresent(Schedule::class.java)
-            }.map { Scheduled(it, it.getAnnotation(Schedule::class.java)) } to bean.value
+            }.map { Scheduled(it, it.getAnnotation(Schedule::class.java)) } to bean.value.bean
         }
         methodPairs.forEach { methodPair: Pair<List<Scheduled>, Any> ->
             methodPair.first.forEach { scheduled ->

@@ -2,29 +2,26 @@ package org.reboot.app.init
 
 import org.reboot.app.ReBootContext
 import org.reboot.app.annotation.Component
+import org.reboot.app.aspect.AspectProcessor
+import org.reboot.app.aspect.LoggingAspect
 
 object ComponentInitializer : ClassInitializer {
+    val aspects: List<AspectProcessor> = listOf(
+        LoggingAspect
+    )
+
     override fun init(classes: List<Class<*>>) {
         classes.filter { it.isAnnotationPresent(Component::class.java) }
             .forEach { initClass(it, classes) }
     }
 
-    private fun initClass(clazz: Class<*>, classes: List<Class<*>>): Any =
+    fun initClass(clazz: Class<*>, classes: List<Class<*>>): Any =
         when (val instance = ReBootContext.getByClass(clazz)) {
-            null -> {
-                val constructor = findConstructor(clazz, classes)
-                val parameterTypes = constructor.parameterTypes
-                constructor.newInstance(
-                    *parameterTypes.map { initClass(it, classes) }.toTypedArray<Any>()
-                ).apply {
-                    ReBootContext.contextMap[clazz] = this as Any
-                }
-            }
-
+            null -> ProxyMaker.make(clazz, classes)
             else -> instance
         }
 
-    private fun findConstructor(clazz: Class<*>, classes: List<Class<*>>) =
+    fun findConstructor(clazz: Class<*>, classes: List<Class<*>>) =
         clazz.declaredConstructors.firstOrNull()
             ?: classes.firstOrNull {
                 clazz.isAssignableFrom(it) && it.declaredConstructors.isNotEmpty()

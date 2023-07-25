@@ -6,7 +6,7 @@ import org.reboot.app.init.ConfigInitializer
 import org.reboot.app.processor.Processor
 
 object ReBootContext {
-    val contextMap: MutableMap<Class<*>, Any> = mutableMapOf()
+    val contextMap: MutableMap<Class<*>, Bean> = mutableMapOf()
 
     fun run() {
         println("init context...")
@@ -17,14 +17,16 @@ object ReBootContext {
     }
 
     fun getByClass(clazz: Class<*>): Any? {
+        val instance = contextMap[clazz]
+        if (instance != null) return instance.bean
         val targetClass = contextMap.keys.filterIsInstance(clazz)
             .firstOrNull() ?: return null
-        return contextMap[targetClass]
+        return contextMap[targetClass]?.bean
     }
 
     private fun invokeProcessors() {
-        contextMap.filterValues { it is Processor }
-            .forEach { (_, bean) -> (bean as Processor).process() }
+        contextMap.filterValues { it.bean is Processor }
+            .forEach { (_, bean) -> (bean.bean as Processor).process() }
     }
 
     private fun initBeans() {
@@ -42,3 +44,8 @@ object ReBootContext {
         return classes
     }
 }
+
+data class Bean(
+    val clazz: Class<*>,
+    val bean: Any
+)
