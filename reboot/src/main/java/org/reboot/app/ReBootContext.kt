@@ -7,6 +7,10 @@ import org.reboot.app.processor.Processor
 
 object ReBootContext {
     val contextMap: MutableMap<Class<*>, Bean> = mutableMapOf()
+    private val inits = listOf(
+        ConfigInitializer,
+        ComponentInitializer
+    )
 
     fun run() {
         println("init context...")
@@ -30,9 +34,9 @@ object ReBootContext {
     }
 
     private fun initBeans() {
-        val classes = getAllClasses()
-        ConfigInitializer.init(classes)
-        ComponentInitializer.init(classes)
+        inits.forEach {
+            it.init(getAllClasses())
+        }
     }
 
     private fun getAllClasses(): List<Class<*>> {

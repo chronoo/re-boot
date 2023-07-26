@@ -1,4 +1,4 @@
-package org.reboot.app.annotation
+package org.reboot.app.annotation.aspect
 
 import kotlin.reflect.KClass
 

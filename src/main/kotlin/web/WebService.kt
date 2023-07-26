@@ -1,7 +1,7 @@
 package web
 
 import org.reboot.app.annotation.Component
-import org.reboot.app.annotation.Logging
+import org.reboot.app.annotation.aspect.Logging
 import org.reboot.app.annotation.Schedule
 
 @Component

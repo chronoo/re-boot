@@ -3,7 +3,7 @@ package org.reboot.app.init
 import net.sf.cglib.proxy.Enhancer
 import net.sf.cglib.proxy.MethodInterceptor
 import org.reboot.app.Bean
-import org.reboot.app.annotation.Aspect
+import org.reboot.app.annotation.aspect.Aspect
 
 object ProxyMaker {
     fun make(clazz: Class<*>, classes: List<Class<*>>): Bean {

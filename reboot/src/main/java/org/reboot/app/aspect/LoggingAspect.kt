@@ -1,8 +1,8 @@
 package org.reboot.app.aspect
 
 import net.sf.cglib.proxy.MethodProxy
-import org.reboot.app.annotation.Aspect
-import org.reboot.app.annotation.Logging
+import org.reboot.app.annotation.aspect.Aspect
+import org.reboot.app.annotation.aspect.Logging
 import java.lang.reflect.Method
 
 @Aspect(Logging::class)
