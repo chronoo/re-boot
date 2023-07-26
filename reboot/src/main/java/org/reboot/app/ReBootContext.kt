@@ -3,13 +3,15 @@ package org.reboot.app
 import com.google.common.reflect.ClassPath
 import org.reboot.app.init.ComponentInitializer
 import org.reboot.app.init.ConfigInitializer
+import org.reboot.app.init.PostConstructInitializer
 import org.reboot.app.processor.Processor
 
 object ReBootContext {
     val contextMap: MutableMap<Class<*>, Bean> = mutableMapOf()
     private val inits = listOf(
         ConfigInitializer,
-        ComponentInitializer
+        ComponentInitializer,
+        PostConstructInitializer
     )
 
     fun run() {

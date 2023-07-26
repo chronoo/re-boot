@@ -5,14 +5,14 @@ import org.reboot.app.annotation.Component
 import org.reboot.app.annotation.EventListener
 import org.reboot.app.event.Event
 import org.reboot.app.event.EventDispatcher
+import org.reboot.app.utils.getAnnotatedMethods
 
 @Component
 class EventListenerProcessor : Processor {
     override fun process() {
         val methodPairs = ReBootContext.contextMap.map { bean ->
-            bean.key.declaredMethods.filter { method ->
-                method.isAnnotationPresent(EventListener::class.java)
-            }.associateWith { bean.value.bean }
+            bean.key.getAnnotatedMethods<EventListener>()
+                .associateWith { bean.value.bean }
         }
 
         methodPairs.forEach { methodPair ->

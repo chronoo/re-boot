@@ -2,6 +2,7 @@ package web
 
 import org.reboot.app.annotation.Component
 import org.reboot.app.annotation.EventListener
+import org.reboot.app.annotation.PostConstruct
 import org.reboot.app.event.Event
 import org.reboot.app.event.EventDispatcher
 
@@ -9,6 +10,11 @@ import org.reboot.app.event.EventDispatcher
 class WebComponent(
     private val config: WebConfig
 ) : Maker {
+
+    @PostConstruct
+    fun init() {
+        println("post construct: ${config.message}")
+    }
 
     @EventListener
     fun doIt(event: CustomEvent) {

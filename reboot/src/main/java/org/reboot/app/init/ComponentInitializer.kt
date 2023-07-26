@@ -4,6 +4,7 @@ import org.reboot.app.ReBootContext
 import org.reboot.app.annotation.Component
 import org.reboot.app.aspect.AspectProcessor
 import org.reboot.app.aspect.LoggingAspect
+import org.reboot.app.utils.firstConstructor
 
 object ComponentInitializer : ClassInitializer {
     val aspects: List<AspectProcessor> = listOf(
@@ -21,13 +22,12 @@ object ComponentInitializer : ClassInitializer {
                 ReBootContext.contextMap[clazz] = this
                 bean
             }
+
             else -> instance
         }
 
     fun findConstructor(clazz: Class<*>, classes: List<Class<*>>) =
-        clazz.declaredConstructors.firstOrNull()
-            ?: classes.firstOrNull {
-                clazz.isAssignableFrom(it) && it.declaredConstructors.isNotEmpty()
-            }?.declaredConstructors?.firstOrNull()
-            ?: throw IllegalAccessException()
+        clazz.firstConstructor ?: classes.firstOrNull {
+            clazz.isAssignableFrom(it) && it.declaredConstructors.isNotEmpty()
+        }?.firstConstructor ?: throw IllegalAccessException()
 }
