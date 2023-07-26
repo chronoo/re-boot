@@ -5,7 +5,6 @@ import org.reboot.app.annotation.aspect.Logging
 import org.reboot.app.annotation.Schedule
 
 @Component
-@Logging
 class WebService(
     private val component: Maker,
     private val config: WebConfig
