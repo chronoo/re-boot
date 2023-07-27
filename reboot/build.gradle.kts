@@ -21,6 +21,7 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("com.google.guava:guava:32.1.1-jre")
+    implementation(project(mapOf("path" to ":reunit")))
 //    runtimeOnly("org.aspectj:aspectjrt:1.8.9")
 //    runtimeOnly("org.aspectj:aspectjweaver:1.8.9")
 //    implementation("org.aspectj:aspectjrt:1.9.6")

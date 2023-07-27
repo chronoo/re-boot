@@ -1,6 +1,6 @@
 import org.example.mock.*
 
-fun main() = runTests {
+fun main() = runTests("Mocking") {
     test("mock") {
         val mock = mock<Simple>().stub {
             on { doIt() } doReturn 42

@@ -2,7 +2,7 @@ import org.example.mock.assertEquals
 import org.example.mock.runTests
 import org.example.mock.test
 
-fun main() = runTests {
+fun main() = runTests("Assertions") {
     test("success test") {
         assertEquals(42, 42)
     }

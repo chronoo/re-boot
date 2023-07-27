@@ -2,9 +2,9 @@ package org.example.mock
 
 val testResults = mutableListOf<TestResult>()
 
-fun runTests(testActions: () -> Unit) {
+fun runTests(title: String, testActions: () -> Unit) {
     testActions()
-    println("Test results: all: ${testResults.size}, success: ${testResults.count { it.success }}, failed: ${testResults.count { !it.success }}")
+    println("[$title] test results: all: ${testResults.size}, success: ${testResults.count { it.success }}, failed: ${testResults.count { !it.success }}")
 }
 
 data class TestResult(
