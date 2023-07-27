@@ -7,7 +7,7 @@ plugins {
 }
 
 allOpen {
-    annotation("org.reboot.app.annotation.Component")
+    annotation("org.example.mock.ForTesting")
 }
 
 group = "org.example"
@@ -22,6 +22,7 @@ dependencies {
     implementation("com.google.guava:guava:32.1.1-jre")
     implementation("cglib:cglib:3.3.0")
     implementation(kotlin("reflect"))
+    testImplementation(kotlin("test"))
 }
 val compileKotlin: KotlinCompile by tasks
 compileKotlin.kotlinOptions {
