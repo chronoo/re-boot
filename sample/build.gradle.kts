@@ -22,11 +22,6 @@ dependencies {
     implementation("cglib:cglib:3.3.0")
     testImplementation(kotlin("test"))
 }
-
-tasks.test {
-    useJUnitPlatform()
-}
-
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "11"
 }

@@ -1,16 +1,18 @@
 import org.example.mock.*
 
-fun main() {
-    val mock = mock<Simple>().stub {
-        on { doIt() } doReturn 42
-    }
-    println(mock.doIt())
-    println(mock.doThat())
+fun main() = runTests {
+    test("mock") {
+        val mock = mock<Simple>().stub {
+            on { doIt() } doReturn 42
+        }
+        assertEquals(42, mock.doIt())
+        assertEquals(null, mock.doThat())
 
-    mock.stub {
-        on { doThat() } doReturn "test"
+        mock.stub {
+            on { doThat() } doReturn "test"
+        }
+        assertEquals("test", mock.doThat())
     }
-    println(mock.doThat())
 }
 
 

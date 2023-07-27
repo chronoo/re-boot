@@ -20,11 +20,6 @@ repositories {
 dependencies {
     implementation(project(mapOf("path" to ":reboot")))
     implementation("cglib:cglib:3.3.0")
-    testImplementation(kotlin("test"))
-}
-
-tasks.test {
-    useJUnitPlatform()
 }
 
 tasks.withType<KotlinCompile> {

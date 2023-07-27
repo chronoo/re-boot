@@ -19,8 +19,6 @@ repositories {
 }
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
     implementation(kotlin("stdlib-jdk8"))
     implementation("com.google.guava:guava:32.1.1-jre")
 //    runtimeOnly("org.aspectj:aspectjrt:1.8.9")
@@ -28,9 +26,6 @@ dependencies {
 //    implementation("org.aspectj:aspectjrt:1.9.6")
     implementation("cglib:cglib:3.3.0")
     implementation(kotlin("reflect"))
-}
-tasks.test {
-    useJUnitPlatform()
 }
 val compileKotlin: KotlinCompile by tasks
 compileKotlin.kotlinOptions {

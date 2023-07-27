@@ -1,14 +1,13 @@
+import org.example.mock.assertEquals
 import org.example.mock.runTests
 import org.example.mock.test
 
-fun main() {
-    runTests {
-        test("some test") {
-            println(42)
-        }
+fun main() = runTests {
+    test("success test") {
+        assertEquals(42, 42)
+    }
 
-        test("some test2") {
-            throw IllegalAccessException()
-        }
+    test("fail test2") {
+        assertEquals(42, 41)
     }
 }
