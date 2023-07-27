@@ -1,12 +1,12 @@
 package org.reboot.app.event
 
 object EventDispatcher {
-    private val listeners: MutableMap<Class<out Event>, MutableList<(event: Event) -> Unit>> = mutableMapOf()
+    val listeners: MutableMap<Class<out Event>, MutableList<(event: Event) -> Unit>> = mutableMapOf()
 
-    fun subscribe(clazz: Class<out Event>, callback: (event: Event) -> Unit) {
-        listeners.computeIfAbsent(clazz) { mutableListOf() }
-            .add(0, callback)
-        println("register listener to $clazz")
+    inline fun <reified T : Event> subscribe(noinline callback: (event: T) -> Unit) {
+        val subscribers = listeners.computeIfAbsent(T::class.java) { mutableListOf() }
+        subscribers += callback as (Event) -> Unit
+        println("register listener to ${T::class.java}")
     }
 
     fun emit(event: Event) {

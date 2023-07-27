@@ -6,8 +6,8 @@ import org.example.mock.test
 
 fun main() = runTests("EventDispatcher") {
     test("process event") {
-        val events = mutableListOf<Event>()
-        EventDispatcher.subscribe(CustomEvent::class.java) {
+        val events = mutableListOf<CustomEvent>()
+        EventDispatcher.subscribe<CustomEvent> {
             events += it
         }
         EventDispatcher.emit(CustomEvent("test-event"))
