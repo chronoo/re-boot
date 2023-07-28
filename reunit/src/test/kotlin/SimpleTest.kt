@@ -6,14 +6,36 @@ fun main() = runTests("Assertions") {
     }
 
     test("fail test") {
-        assertEquals(42, 41)
+        failed {
+            assertEquals(42, 41)
+        }
     }
 
     test("infix equals fail") {
-        42 equals 41
+        failed {
+            42 equals 41
+        }
     }
 
     test("infix not equals") {
         42 notEquals 41
+    }
+
+    test("boolean assert") {
+        true.isTrue
+    }
+
+    test("boolean assert") {
+        failed {
+            true.isFalse
+        }
+    }
+
+    test("assertThat assert") {
+        assertThat(42).isEquals(42)
+
+        failed {
+            assertThat(42).isEquals(41)
+        }
     }
 }

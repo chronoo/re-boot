@@ -23,3 +23,16 @@ infix fun <T> T.equals(expected: T) =
 
 infix fun <T> T.notEquals(expected: T) =
     assertNotEquals(expected, this)
+
+val Boolean.isTrue
+    get() = assertEquals(true, this)
+
+val Boolean.isFalse
+    get() = assertEquals(false, this)
+
+fun <T> assertThat(value: T) =
+    Asserted(value)
+
+class Asserted<T>(private val value: T) {
+    fun isEquals(expected: T) = value equals expected
+}
