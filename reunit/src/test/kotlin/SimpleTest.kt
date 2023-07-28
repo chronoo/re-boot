@@ -1,13 +1,19 @@
-import org.example.mock.assertEquals
-import org.example.mock.runTests
-import org.example.mock.test
+import org.example.mock.*
 
 fun main() = runTests("Assertions") {
     test("success test") {
-        assertEquals(42, 42)
+        42 equals 42
     }
 
-    test("fail test2") {
+    test("fail test") {
         assertEquals(42, 41)
+    }
+
+    test("infix equals fail") {
+        42 equals 41
+    }
+
+    test("infix not equals") {
+        42 notEquals 41
     }
 }
