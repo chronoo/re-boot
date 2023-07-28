@@ -34,15 +34,5 @@ fun test(title: String, action: () -> Unit) {
     testResults += result
 }
 
-fun failed(function: () -> Unit) {
-    try {
-        function()
-    } catch (e: Throwable) {
-        println(e.message + e.stackTraceToString())
-        return
-    }
-    throw Error("Error expected, but not appeared")
-}
-
 fun red(message: () -> String) =
     "\u001b[31m${message()}\u001b[0m"

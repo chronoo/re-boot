@@ -2,7 +2,7 @@ import org.example.mock.*
 
 fun main() = runTests("Assertions") {
     test("success test") {
-        42 equals 42
+        42 shouldBe 42
     }
 
     test("fail test") {
@@ -13,12 +13,12 @@ fun main() = runTests("Assertions") {
 
     test("infix equals fail") {
         failed {
-            42 equals 41
+            42 shouldBe 41
         }
     }
 
     test("infix not equals") {
-        42 notEquals 41
+        42 shouldNotBe 41
     }
 
     test("boolean assert") {
@@ -32,10 +32,22 @@ fun main() = runTests("Assertions") {
     }
 
     test("assertThat assert") {
-        assertThat(42).isEquals(42)
+        that(42).shouldBe(42)
 
         failed {
-            assertThat(42).isEquals(41)
+            that(42).shouldBe(41)
+        }
+    }
+
+    test("exception assert") {
+        shouldThrow<IllegalStateException> {
+            throw IllegalStateException("test message")
+        }.message shouldBe "test message"
+
+        failed {
+            shouldThrow<IllegalStateException> {
+                throw NullPointerException()
+            }
         }
     }
 }

@@ -18,10 +18,10 @@ fun <T> assertEquals(expected: T, actual: T) =
 fun <T> assertNotEquals(expected: T, actual: T) =
     assertNotEquals(expected, actual, "Value equals: \n\tExpected: [$expected]\n\tActual: [$actual]")
 
-infix fun <T> T.equals(expected: T) =
+infix fun <T> T.shouldBe(expected: T) =
     assertEquals(expected, this)
 
-infix fun <T> T.notEquals(expected: T) =
+infix fun <T> T.shouldNotBe(expected: T) =
     assertNotEquals(expected, this)
 
 val Boolean.isTrue
@@ -30,9 +30,24 @@ val Boolean.isTrue
 val Boolean.isFalse
     get() = assertEquals(false, this)
 
-fun <T> assertThat(value: T) =
+val Any?.isNull
+    get() = assertEquals(null, this)
+
+fun <T> that(value: T) =
     Asserted(value)
 
+inline fun <reified E: Throwable> shouldThrow(action: () -> Unit): E {
+    try {
+        action()
+    } catch (e: Throwable) {
+        if (e is E) return e
+    }
+    throw Error("Error expected, but not appeared")
+}
+
+fun failed(action: () -> Unit) =
+    shouldThrow<Throwable>(action)
+
 class Asserted<T>(private val value: T) {
-    fun isEquals(expected: T) = value equals expected
+    fun shouldBe(expected: T) = value shouldBe expected
 }

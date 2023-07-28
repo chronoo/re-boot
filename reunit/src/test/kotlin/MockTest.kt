@@ -5,13 +5,13 @@ fun main() = runTests("Mocking") {
         val mock = mock<Simple>().stub {
             on { doIt() } doReturn 42
         }
-        assertEquals(42, mock.doIt())
-        assertEquals(null, mock.doThat())
+        mock.doIt() shouldBe 42
+        mock.doThat().isNull
 
         mock.stub {
-            on { doThat() } doReturn "test"
+            on { doThat() } doAnswer { "test" }
         }
-        assertEquals("test", mock.doThat())
+        mock.doThat() shouldBe "test"
     }
 }
 
