@@ -12,12 +12,20 @@ fun main() = runTests("Mocking") {
             on { doThat() } doAnswer { "test" }
         }
         mock.doThat() shouldBe "test"
+
+        failed {
+            verify(mock).doNothing()
+        }
+
+        mock.doNothing()
+        mock.doNothing()
+        verify(mock, 2).doNothing()
     }
 }
-
 
 @ForTesting
 class Simple {
     fun doIt() = 42
     fun doThat() = "hello"
+    fun doNothing() = "nothing"
 }
