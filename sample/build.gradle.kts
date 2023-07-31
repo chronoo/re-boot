@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    implementation(project(mapOf("path" to ":reboot")))
+    implementation(project(":reboot"))
     implementation("cglib:cglib:3.3.0")
 }
 tasks.withType<KotlinCompile> {
