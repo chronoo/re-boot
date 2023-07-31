@@ -6,24 +6,32 @@ import org.reboot.app.annotation.EventListener
 import org.reboot.app.event.Event
 import org.reboot.app.event.EventDispatcher
 import org.reboot.app.utils.getAnnotatedMethods
+import java.lang.reflect.Method
 
 @Component
 class EventListenerProcessor : Processor {
     override fun process() {
-        val methodPairs = ReBootContext.contextMap.map { bean ->
+        val callbacks = ReBootContext.contextMap.map { bean ->
             bean.key.getAnnotatedMethods<EventListener>()
                 .associateWith { bean.value.bean }
+        }.flatMap { methodPair ->
+            methodPair.entries.map { (method, instance) ->
+                EventCallback(method, instance)
+            }
         }
 
-        methodPairs.forEach { methodPair ->
-            methodPair.entries.forEach { pair ->
-                val callback = pair.key
-                val eventClass = callback.parameterTypes.first()
-                    .asSubclass(Event::class.java)
-                EventDispatcher.subscribe(eventClass) { event ->
-                    callback.invoke(pair.value, event)
-                }
+        for (callback in callbacks) {
+            EventDispatcher.subscribe(callback.eventClass) { event ->
+                callback.callback.invoke(callback.instance, event)
             }
         }
     }
+}
+
+data class EventCallback(
+    val callback: Method,
+    val instance: Any
+) {
+    val eventClass: Class<out Event> = callback.parameterTypes.first()
+        .asSubclass(Event::class.java)
 }
