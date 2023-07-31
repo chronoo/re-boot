@@ -1,7 +1,7 @@
 package org.reboot.app.event
 
-import org.example.mock.assertEquals
 import org.example.mock.runTests
+import org.example.mock.shouldBe
 import org.example.mock.test
 
 fun main() = runTests("EventDispatcher") {
@@ -11,8 +11,8 @@ fun main() = runTests("EventDispatcher") {
             events += it
         }
         EventDispatcher.emit(CustomEvent("test-event"))
-        assertEquals(1, events.size)
-        assertEquals("test-event", events.first().name)
+        events.size shouldBe 1
+        events.first().name shouldBe "test-event"
     }
 }
 
