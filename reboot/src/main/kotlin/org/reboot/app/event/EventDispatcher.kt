@@ -1,5 +1,7 @@
 package org.reboot.app.event
 
+import java.lang.reflect.Method
+
 object EventDispatcher {
     private val listeners: MutableMap<Class<out Event>, MutableList<(event: Event) -> Unit>> = mutableMapOf()
 
@@ -12,6 +14,11 @@ object EventDispatcher {
         println("register listener to $clazz")
     }
 
+    fun subscribe(callback: EventCallback) =
+        subscribe(callback.eventClass) { event ->
+            callback.callback.invoke(callback.instance, event)
+        }
+
     fun emit(event: Event) {
         println("submit event $event")
         listeners.entries.filter { it.key.isInstance(event) }
@@ -20,4 +27,12 @@ object EventDispatcher {
                 listener(event)
             }
     }
+}
+
+data class EventCallback(
+    val callback: Method,
+    val instance: Any
+) {
+    val eventClass: Class<out Event> = callback.parameterTypes.first()
+        .asSubclass(Event::class.java)
 }
