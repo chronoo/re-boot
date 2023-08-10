@@ -1,6 +1,5 @@
 package org.redata.ddl
 
-import com.google.common.reflect.ClassPath
 import org.redata.ddl.definition.TableDefinition
 import java.sql.Connection
 
@@ -18,13 +17,3 @@ object TableDefinitionLocator {
     }
 }
 
-object ClassLocator {
-    fun locate(): List<Class<*>> {
-        val classLoader = Thread.currentThread().contextClassLoader
-        val classes = ClassPath.from(classLoader).topLevelClasses
-            .mapNotNull {
-                runCatching { it.load() }.getOrNull()
-            }
-        return classes
-    }
-}
