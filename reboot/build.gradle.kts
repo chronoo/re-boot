@@ -20,7 +20,9 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("com.google.guava:guava:32.1.1-jre")
+    implementation(project(mapOf("path" to ":rebase")))
     testImplementation(project(":reunit"))
+    implementation(project(":rebase"))
     implementation("cglib:cglib:3.3.0")
     implementation(kotlin("reflect"))
 }

@@ -10,10 +10,3 @@ object SchemaMaker {
         }
     }
 }
-
-object TableDefinitionLocator {
-    fun locate(): List<TableDefinition> {
-        return listOf()
-    }
-}
-

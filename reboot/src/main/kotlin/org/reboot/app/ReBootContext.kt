@@ -1,6 +1,6 @@
 package org.reboot.app
 
-import com.google.common.reflect.ClassPath
+import org.rebase.ClassLocator
 import org.reboot.app.init.ComponentInitializer
 import org.reboot.app.init.ConfigInitializer
 import org.reboot.app.init.PostConstructInitializer
@@ -37,17 +37,8 @@ object ReBootContext {
 
     private fun initBeans() {
         inits.forEach {
-            it.init(getAllClasses())
+            it.init(ClassLocator.findAllClasses())
         }
-    }
-
-    private fun getAllClasses(): List<Class<*>> {
-        val classLoader = Thread.currentThread().contextClassLoader
-        val classes = ClassPath.from(classLoader).topLevelClasses
-            .mapNotNull {
-                runCatching { it.load() }.getOrNull()
-            }
-        return classes
     }
 }
 

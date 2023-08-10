@@ -4,7 +4,7 @@ import kotlin.collections.mapNotNull
 import kotlin.runCatching
 
 object ClassLocator {
-    fun locate(): List<Class<*>> {
+    fun findAllClasses(): List<Class<*>> {
         val classLoader = Thread.currentThread().contextClassLoader
         val classes = com.google.common.reflect.ClassPath.from(classLoader).topLevelClasses
             .mapNotNull {
