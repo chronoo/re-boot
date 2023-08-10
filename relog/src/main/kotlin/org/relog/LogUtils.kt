@@ -1,4 +1,4 @@
-package org.redata.log
+package org.relog
 
 object ANSI {
     const val ANSI_GREEN = "\u001B[32m"

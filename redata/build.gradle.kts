@@ -21,6 +21,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("com.google.guava:guava:32.1.1-jre")
     implementation(project(":reunit"))
+    implementation(project(":relog"))
     implementation("cglib:cglib:3.3.0")
     implementation(kotlin("reflect"))
     implementation("com.h2database:h2:2.2.220")

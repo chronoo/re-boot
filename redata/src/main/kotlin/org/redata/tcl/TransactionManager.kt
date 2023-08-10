@@ -1,8 +1,8 @@
 package org.redata.tcl
 
-import org.redata.log.info
-import org.redata.log.error
-import org.redata.log.warn
+import org.relog.info
+import org.relog.warn
+import org.relog.error
 import java.sql.Connection
 
 object TransactionManager {
