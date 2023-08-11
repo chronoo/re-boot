@@ -1,10 +1,12 @@
 package org.redata.ddl
 
 import org.rebase.ClassLocator
+import java.sql.Connection
 
 object DBInitializer {
-    fun init() {
+    fun init(connection: Connection) {
         val allClasses = ClassLocator.findAllClasses()
-        TableDefinitionLocator.locate(allClasses)
+        val tableDefinitions = TableDefinitionLocator.locate(allClasses)
+        SchemaMaker.init(connection, tableDefinitions)
     }
 }
