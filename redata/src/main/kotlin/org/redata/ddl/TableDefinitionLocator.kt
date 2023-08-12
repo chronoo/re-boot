@@ -33,14 +33,17 @@ object TableDefinitionLocator {
     private fun <T : Any> extractColumnDefinition(fields: Array<out T>): List<ColumnDefinition> {
         return fields.map { it instance SourceElement::class }
             .map { parameter ->
-                if (parameter.isAnnotationPresent(Column::class.java)) {
-                    val columnAnnotation = parameter.getAnnotation(Column::class.java)
-                    ColumnDefinition(columnAnnotation.value, columnAnnotation.type)
-                } else {
-                    ColumnDefinition(parameter.name, parameter.type.asString)
-                }
+                val columnName = parameter.columnName
+                ColumnDefinition(columnName, parameter.type.asString)
             }
     }
+
+    private val SourceElement.columnName: String
+        get() = if (isAnnotationPresent(Column::class.java)) {
+            getAnnotation(Column::class.java).value
+        } else {
+            name
+        }
 
     interface SourceElement {
         fun isAnnotationPresent(annotationClass: Class<out Annotation>): Boolean

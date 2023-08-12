@@ -13,6 +13,6 @@ fun main() {
 
 @ReEntity("person")
 class PersonEntity(
-    @Column("age", "number")
+    @Column("age")
     var age: Int
 )
